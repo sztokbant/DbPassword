@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 
 import org.junit.Test;
 
+import br.net.du.dbpassword.DbPassword;
+
 public class DbPasswordTest {
 
 	private String password = "senha";
@@ -27,7 +29,8 @@ public class DbPasswordTest {
 	public void testEncode() throws NoSuchAlgorithmException {
 		DbPassword dbp = new DbPassword("my shared secret");
 		String encoded = dbp.encode(password);
-		assertEquals(dbp.getLastSalt(), encoded.substring(0, 4));
+		assertEquals(dbp.getLastSalt(),
+				encoded.substring(0, DbPassword.HASH_OFFSET));
 		assertTrue(dbp.matches(password, encoded));
 	}
 
