@@ -18,6 +18,7 @@ public class DbPassword {
 
 	public boolean matches(String password, String hash)
 			throws NoSuchAlgorithmException {
+		hash = hash.toLowerCase();
 		String salt = hash.substring(0, HASH_OFFSET);
 		String sha1 = sha1sum(password + salt + sharedSecret);
 		return sha1.substring(0, sha1.length() - HASH_OFFSET).equals(
