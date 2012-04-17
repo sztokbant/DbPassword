@@ -7,6 +7,10 @@ import java.util.Random;
 
 public class DbPassword {
 
+	// 2 is acceptable for the hashOffset, 4 sounds good, 20 is more than enough
+	// for a 40 character length SHA-1 string
+	public static final int MAX_OFFSET_LENGTH = 20;
+
 	private String sharedSecret;
 	private int hashOffset;
 
@@ -14,7 +18,9 @@ public class DbPassword {
 
 	public DbPassword(String sharedSecret, int hashOffset) {
 		this.sharedSecret = sharedSecret;
-		this.hashOffset = hashOffset;
+
+		this.hashOffset = (hashOffset >= MAX_OFFSET_LENGTH) ? MAX_OFFSET_LENGTH
+				: hashOffset;
 	}
 
 	public boolean matches(String password, String hash)
