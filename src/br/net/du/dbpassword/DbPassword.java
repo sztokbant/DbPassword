@@ -50,7 +50,7 @@ public class DbPassword {
 	}
 
 	private String newSalt() {
-		lastSalt = Integer.toHexString(new Random().nextInt(0xffff));
+		lastSalt = String.format("%04x", new Random().nextInt(0xffff));
 		return lastSalt;
 	}
 }
