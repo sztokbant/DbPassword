@@ -7,34 +7,27 @@ import java.util.Random;
 
 public class DbPassword {
 
-	// 2 is acceptable for the hashOffset, 4 sounds good, 20 is more than enough
-	// for a 40 character length SHA-1 string
-	public static final int MAX_OFFSET_LENGTH = 20;
+	public static final int HASH_OFFSET = 4;
 
 	private String sharedSecret;
-	private int hashOffset;
+	private String lastSalt;
 
-	private String lastSalt = "";
-
-	public DbPassword(String sharedSecret, int hashOffset) {
+	public DbPassword(String sharedSecret) {
 		this.sharedSecret = sharedSecret;
-
-		this.hashOffset = (hashOffset >= MAX_OFFSET_LENGTH) ? MAX_OFFSET_LENGTH
-				: hashOffset;
 	}
 
 	public boolean matches(String password, String hash)
 			throws NoSuchAlgorithmException {
-		String salt = hash.substring(0, hashOffset);
+		String salt = hash.substring(0, HASH_OFFSET);
 		String sha1 = sha1sum(password + salt + sharedSecret);
-		return sha1.substring(0, sha1.length() - hashOffset).equals(
-				hash.substring(hashOffset));
+		return sha1.substring(0, sha1.length() - HASH_OFFSET).equals(
+				hash.substring(HASH_OFFSET));
 	}
 
 	public String encode(String password) throws NoSuchAlgorithmException {
 		String salt = newSalt();
 		String sha1 = sha1sum(password + salt + sharedSecret);
-		String encoded = salt + sha1.substring(0, sha1.length() - hashOffset);
+		String encoded = salt + sha1.substring(0, sha1.length() - HASH_OFFSET);
 		return encoded;
 	}
 
