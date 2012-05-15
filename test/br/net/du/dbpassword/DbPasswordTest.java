@@ -11,8 +11,9 @@ public class DbPasswordTest {
 
 	@Test
 	public void sha1sumTest() {
-		String hash = "7751a23fa55170a57e90374df13a3ab78efe0e99";
-		assertEquals(hash, new DbPassword("my shared secret").sha1sum(password));
+		String hash = "bac6ed9bc78f296f631b432a1e0698c79d8046db";
+		assertEquals(hash,
+				new DbPassword("my shared secret").sha1sum("password", "salt"));
 	}
 
 	@Test
