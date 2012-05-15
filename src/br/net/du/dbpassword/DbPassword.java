@@ -16,8 +16,7 @@ public class DbPassword {
 		this.sharedSecret = sharedSecret;
 	}
 
-	public boolean matches(String password, String hash)
-			throws NoSuchAlgorithmException {
+	public boolean matches(String password, String hash) {
 		hash = hash.toLowerCase();
 		String salt = hash.substring(0, HASH_OFFSET);
 		String sha1 = sha1sum(password + salt + sharedSecret);
@@ -25,7 +24,7 @@ public class DbPassword {
 				hash.substring(HASH_OFFSET));
 	}
 
-	public String encode(String password) throws NoSuchAlgorithmException {
+	public String encode(String password) {
 		String salt = newSalt();
 		String sha1 = sha1sum(password + salt + sharedSecret);
 		String encoded = salt + sha1.substring(0, sha1.length() - HASH_OFFSET);
@@ -36,8 +35,15 @@ public class DbPassword {
 		return lastSalt;
 	}
 
-	String sha1sum(String password) throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("SHA-1");
+	String sha1sum(String password) {
+		MessageDigest md;
+
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+
 		md.update(password.getBytes());
 		BigInteger hash = new BigInteger(1, md.digest());
 		return hash.toString(16);
