@@ -2,6 +2,7 @@ package br.net.du.dbpassword;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Formatter;
 import java.util.Random;
 
@@ -11,8 +12,10 @@ public class DbPassword {
 
 	private String sharedSecret;
 	private String lastSalt;
+	private Random random;
 
 	public DbPassword(String sharedSecret) {
+		random = new SecureRandom();
 		this.sharedSecret = sharedSecret;
 	}
 
@@ -57,7 +60,7 @@ public class DbPassword {
 	}
 
 	private String newSalt() {
-		lastSalt = String.format("%04x", new Random().nextInt(0xffff));
+		lastSalt = String.format("%04x", random.nextInt(0xffff));
 		return lastSalt;
 	}
 }
