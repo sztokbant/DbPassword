@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class DbPassword {
 
-	public static final int HASH_OFFSET = 4;
+	static final int HASH_OFFSET = 4;
 
 	private String sharedSecret;
 	private String lastSalt;
